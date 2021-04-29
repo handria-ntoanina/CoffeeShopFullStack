@@ -17,7 +17,7 @@ CORS(app)
 !! NOTE THIS MUST BE UNCOMMENTED ON FIRST RUN
 !! Running this function will add one
 '''
-# db_drop_and_create_all()
+db_drop_and_create_all()
 
 # ROUTES
 '''
@@ -74,16 +74,15 @@ def get_drinks_detail():
 @requires_auth('post:drinks')
 def create_drinks():
     body = request.get_json()
-    drink = body.get('drink', None)
-    
+    drink = Drink(title=body['title'], recipe=json.dumps(body['recipe']))
     try:
         db.session.add(drink)
         db.session.commit()
         return jsonify({
             'success': True,
-            'drinks': [drink]
+            'drinks': [drink.long()]
         }), 200
-    
+
     except:
         abort(422)
 
@@ -108,13 +107,14 @@ def patch_drink(drink_id):
     if not drink:
         abort(404)
     body = request.get_json()
-    drink_src = body.get('drink', None)
     try:
-        
+        drink.title = body['title']
+        if body.get('recipe'):
+            drink.recipe = json.dumps(body.get('recipe'))
         db.session.commit()
         return jsonify({
             'success': True,
-            'drinks': [drink]
+            'drinks': [drink.long()]
         }), 200
     except:
         abort(422)

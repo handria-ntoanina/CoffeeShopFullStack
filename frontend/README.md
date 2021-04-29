@@ -12,7 +12,7 @@ This project depends on Nodejs and Node Package Manager (NPM). Before continuing
 
 #### Installing Ionic Cli
 
-The Ionic Command Line Interface is required to serve and build the frontend. Instructions for installing the CLI is in the [Ionic Framework Docs](https://ionicframework.com/docs/installation/cli).
+The Ionic Command Line Interface is required to serve and build the frontend. Instructions for installing the CLI is in the [Ionic Framework Docs](https://ionicframework.com/docs/installation/cli). If necessary, when on Windows environment, use a shell with an administrative right.
 
 #### Installing project dependencies
 
@@ -23,6 +23,13 @@ npm install
 ```
 
 > _tip_: **npm i** is shorthand for **npm install**
+
+#### Known issue
+When installing Ionic Cli, npm might fail to complete the installation due to an unrecognized python. In that case, run the below commands and adjust as necessary:
+```bash
+npm install -g windows-build-tools
+npm config set python c:\python27\python.exe
+```
 
 ## Required Tasks
 
@@ -37,15 +44,12 @@ Ionic uses a configuration file to manage environment variables. These variables
 Ionic ships with a useful development server which detects changes and transpiles as you work. The application is then accessible through the browser on a localhost port. To run the development server, cd into the `frontend` directory and run:
 
 ```bash
-ionic serve
+ionic serve --ssl
 ```
 
+ssl is needed here as Auth0 works only with callback URLs on https://
 > _tip_: Do not use **ionic serve** in production. Instead, build Ionic into a build artifact for your desired platforms.
 > [Checkout the Ionic docs to learn more](https://ionicframework.com/docs/cli/commands/build)
-
-## Key Software Design Relevant to Our Coursework
-
-The frontend framework is a bit beefy; here are the two areas to focus your study.
 
 ### Authentication
 
